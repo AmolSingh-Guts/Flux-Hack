@@ -1,0 +1,42 @@
+{
+  "name": "brightloop-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Brightloop Software subscription management API",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "check": "node --check src/server.js",
+    "db:migrate": "node database/migrate.js",
+    "db:seed": "node database/seed.js",
+    "db:setup": "node database/setup.js",
+    "db:reset": "node database/setup.js --force",
+    "test": "NODE_ENV=test BCRYPT_ROUNDS=4 BILLING_CRON_ENABLED=false node --test --test-concurrency=1 tests/*.test.js"
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.9",
+    "express": "^5.3.0",
+    "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "morgan": "^1.12.1",
+    "mysql2": "^3.24.6",
+    "node-cron": "^4.6.0",
+    "nodemailer": "^10.3.1",
+    "pdfkit": "^0.20.2",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14",
+    "supertest": "^7.3.1"
+  },
+  "overrides": {
+    "minimatch": "^11.0.1"
+  }
+}

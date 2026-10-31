@@ -1,0 +1,42 @@
+import { Router } from 'express';
+import authRoutes from './auth.routes.js';
+import billingRoutes from './billing.routes.js';
+import customerRoutes from './customer.routes.js';
+import dashboardRoutes from './dashboard.routes.js';
+import discountRoutes from './discount.routes.js';
+import healthRoutes from './health.routes.js';
+import invoiceRoutes from './invoice.routes.js';
+import paymentRoutes from './payment.routes.js';
+import planRoutes from './plan.routes.js';
+import portalRoutes from './portal.routes.js';
+import productVariantRoutes from './product-variant.routes.js';
+import productRoutes from './product.routes.js';
+import quotationRoutes from './quotation.routes.js';
+import reportRoutes from './report.routes.js';
+import settingsRoutes from './settings.routes.js';
+import staffRoutes from './staff.routes.js';
+import subscriptionRoutes from './subscription.routes.js';
+import taxRoutes from './tax.routes.js';
+
+const router = Router();
+
+router.use('/health', healthRoutes);
+router.use('/auth', authRoutes);
+router.use('/staff', staffRoutes);
+router.use('/customers', customerRoutes);
+router.use('/products', productRoutes);
+router.use('/variants', productVariantRoutes);
+router.use('/plans', planRoutes);
+router.use('/taxes', taxRoutes);
+router.use('/discounts', discountRoutes);
+router.use('/quotations', quotationRoutes);
+router.use('/subscriptions', subscriptionRoutes);
+router.use('/invoices', invoiceRoutes);
+router.use('/payments', paymentRoutes);
+router.use('/dashboard', dashboardRoutes);
+router.use('/reports', reportRoutes);
+router.use('/settings', settingsRoutes);
+router.use('/portal', portalRoutes);
+router.use('/billing', billingRoutes);
+
+export default router;

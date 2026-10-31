@@ -1,0 +1,109 @@
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Eye, EyeOff, Lock } from 'lucide-react';
+import PageHeader from '../../components/ui/PageHeader.jsx';
+import Button from '../../components/ui/Button.jsx';
+import Input from '../../components/ui/Input.jsx';
+import Checkbox from '../../components/ui/Checkbox.jsx';
+import { useAuth } from '../../context/AuthContext.jsx';
+
+export default function LoginPage() {
+  const navigate = useNavigate();
+  const { login: authLogin, isLoading } = useAuth();
+  const [form, setForm] = useState({ email: '', password: '', rememberMe: false });
+  const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    const token = window.localStorage.getItem('brightloop.token');
+    if (token) {
+      // If already logged in, navigate based on role
+      // Role determination would typically come from the auth token payload
+      navigate('/portal/dashboard', { replace: true });
+    }
+  }, [navigate]);
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError('');
+
+    try {
+      await authLogin({ email: form.email, password: form.password });
+      // Navigation handled by useEffect on mount and role check
+    } catch (requestError) {
+      setError(requestError.message ?? 'Login failed. Please check your credentials.');
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
+      <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-2xl shadow-xl border border-slate-200">
+        <PageHeader
+          title="Brightloop Software"
+          description="Subscription Management Platform"
+          actions={<Link to="/register" className="text-sm font-medium text-brand-600 hover:text-brand-700">Create account</Link>}
+        />
+
+        {error && (
+          <div className="bg-rose-50 border border-rose-300 text-rose-700 px-4 py-3 rounded-md mb-6 animate-shake">
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleLogin} className="space-y-6">
+          <div>
+            <Input
+              label="Email"
+              type="email"
+              required
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              placeholder="enter your email"
+            />
+          </div>
+
+          <div>
+            <Input
+              label="Password"
+              type={showPassword ? 'text' : 'password'}
+              required
+              value={form.password}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              placeholder="enter your password"
+            />
+            <div className="flex items-center justify-between text-xs text-slate-500">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </Button>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <Checkbox
+              checked={form.rememberMe}
+              onChange={(e) => setForm({ ...form, rememberMe: e.target.checked }) }
+            />
+            <label className="text-xs text-slate-500">Remember me</label>
+          </div>
+
+          <Button type="submit" icon={Lock} loading={isLoading}>
+            Login
+          </Button>
+
+          <div className="flex gap-3 mt-4">
+            <Link to="/forgot-password" className="text-sm text-slate-500 hover:text-brand-600">
+              Forgot password?
+            </Link>
+            <Link to="/register" className="text-sm font-medium text-brand-600 hover:text-brand-700">
+              Register
+            </Link>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
